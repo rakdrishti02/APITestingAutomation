@@ -1,36 +1,47 @@
 {
 	"info": {
-		"_postman_id": "ced79cc6-dc34-4425-a7b7-facbbe08e881",
-		"name": "API Testing",
+		"_postman_id": "f33adf30-d082-4b29-82f2-20aa764ad5ad",
+		"name": "RakeshAPITesting",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16825267",
-		"_collection_link": "https://interstellar-crater-618961.postman.co/workspace/Deepak~bf826488-9c9f-45b5-b1c9-8f9f987aa2b6/collection/16825267-ced79cc6-dc34-4425-a7b7-facbbe08e881?action=share&creator=16825267&source=collection_link"
+		"_exporter_id": "22728819"
 	},
 	"item": [
 		{
-			"name": "Get Req",
+			"name": "Get",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"\r",
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"pm.test(\"Body matches string\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"Rachel\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"Charles\");\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Your test name\", function () {\r",
+							"pm.test(\"Check JSON Data\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.data.id).to.eql(2);\r",
+							"    pm.expect(jsonData.data[0].id).to.eql(1);\r",
 							"});\r",
+							"pm.test(\"Check url \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.support.url).contains(\"support-heading\");\r",
+							"});\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"var schema = {\r",
+							"    \"items\": {\r",
+							"        \"type\": \"boolean\"\r",
+							"    }\r",
+							"};\r",
 							"\r",
-							"var resp='{\"data\":{\"id\":2,\"email\":\"janet.weaver@reqres.in\",\"first_name\":\"Janet\",\"last_name\":\"Weaver\",\"avatar\":\"https://reqres.in/img/faces/2-image.jpg\"},\"support\":{\"url\":\"https://reqres.in/#support-heading\",\"text\":\"To keep ReqRes free, contributions towards server costs are appreciated!\"}}'\r",
-							" \r",
-							"pm.test(\"Body is correct\", function () {\r",
-							"    pm.response.to.have.body(resp);\r",
+							"var data1 = [true, false];\r",
+							"var data2 = [true, 123];\r",
+							"\r",
+							"pm.test('Schema is valid', function () {\r",
+							"    pm.expect(tv4.validate(data1, schema)).to.be.true;\r",
+							"    pm.expect(tv4.validate(data2, schema)).to.be.true;\r",
 							"});\r",
 							""
 						],
@@ -42,7 +53,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://reqres.in/api/users/2",
+					"raw": "https://reqres.in/api/users",
 					"protocol": "https",
 					"host": [
 						"reqres",
@@ -50,15 +61,14 @@
 					],
 					"path": [
 						"api",
-						"users",
-						"2"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "POST Req",
+			"name": "POST",
 			"event": [
 				{
 					"listen": "test",
@@ -78,7 +88,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"data\": {\r\n        \"email\": \"smitha@test.in\",\r\n        \"first_name\": \"Smitha\",\r\n        \"last_name\": \"Menon\"\r\n    }\r\n}\r\n",
+					"raw": "{\r\n    \"name\": \"checking 2\",\r\n    \"job\": \"leader\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -101,13 +111,59 @@
 			"response": []
 		},
 		{
-			"name": "Delete",
+			"name": "PUT",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {        \r\n        \"id\": 5,\r\n        \"email\": \"smitha@test.in\",\r\n        \"first_name\": \"Test\",\r\n        \"last_name\": \"Name\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/5",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"pm.test(\"Status code is 204\", function () {\r",
 							"    pm.response.to.have.status(204);\r",
 							"});"
 						],
